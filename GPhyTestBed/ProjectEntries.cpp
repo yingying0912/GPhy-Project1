@@ -17,7 +17,6 @@
 
 using namespace std;
 #include "Project01.h"
-
 TestEntry g_testEntries[] =
 {
 	{"Project01", Project01::Create},
