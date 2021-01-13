@@ -1,1 +1,1 @@
-set path=D:\SFML-2.5.1\bin;%path%
+set path=C:\SFML-2.5.1\bin;%path%
