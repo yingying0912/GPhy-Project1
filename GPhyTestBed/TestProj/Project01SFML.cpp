@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "MyRectangle.h"
+#include "Player.h"
 
 using namespace std;
 
@@ -106,10 +107,13 @@ int main()
 
 	//flag for one time rectangle spawning when game launched
 	bool gameStart = false;
+	Player player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY));
+	/*
 	MyRectangle player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY), 0.0, false);
 	player.setOutlineThickness(1);
 	player.setOutlineColor(sf::Color::Black);
 	player.setFillColor(sf::Color(0, 255, 0));
+	*/
 	
 
 	/*
@@ -222,7 +226,7 @@ int main()
 			//leftBorder.update();
 			//rightBorder.update();
 
-			player.update();
+			player.player.update();
 
 			for(int i = 0; i < boxList.size(); i++){
 				boxList[i].update();
@@ -247,7 +251,7 @@ int main()
 			window.draw(boxList[i].getShape());
 		}
 
-		window.draw(player.getShape());
+		window.draw(player.player.getShape());
 
 		ostringstream boxListStream;
 		boxListStream << boxList.size();

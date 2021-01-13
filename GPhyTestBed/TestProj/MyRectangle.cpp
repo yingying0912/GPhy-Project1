@@ -5,7 +5,7 @@
 // Why? Refer to Computer Graphics
 static const float PIXEL_PER_METER = 32.0f;
 
-//MyRectangle::MyRectangle();
+MyRectangle::MyRectangle(){};
 
 MyRectangle::MyRectangle(b2World& world, sf::Vector2f size, sf::Vector2f position,
 						float rotation,bool isDynamic)

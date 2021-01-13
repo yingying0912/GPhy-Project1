@@ -20,6 +20,7 @@ class MyRectangle
 					float rotation = 0,
                bool isDynamic = true
               );
+	MyRectangle();
 	void setFillColor(sf::Color col);
 	void setOutlineThickness(float thickness);
 	void setOutlineColor(sf::Color col);
