@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <stdlib.h>
+#include <time.h>
 
 #include "MyRectangle.h"
 
@@ -23,6 +25,8 @@ sf::Font loadFont(const string& fontFilename = "resources/04b03.ttf")
 
 int main()
 {
+	// random algorithm
+	srand (time(NULL));
 	/*
 		Timer for fixed update
 	    50 (frames/times) per second
@@ -30,6 +34,10 @@ int main()
 	float fixedTimeStep = 0.02f; 
 	sf::Clock fixedUpdateClock;
 	float timeElapsedSinceLastFrame = 0;
+
+	// spawn cd
+	float spawnTime = 1.0f;
+	float currentTime = 0.0f;
 
 	/*
 		Create Windows Application
@@ -96,6 +104,9 @@ int main()
 	vector<MyRectangle> boxList;
 	sf::Vector2f dynamicBoxSize(32,32);
 
+	//flag for one time rectangle spawning when game launched
+	bool gameStart = false;
+
 	/*
 		Define Properties of Fonts
 		-> Sizes, Font Design, Position, Color
@@ -108,7 +119,7 @@ int main()
 	text.setFillColor(sf::Color::White);
 
 	// A buffer to check whether left mouse button has been clicked before or not
-	bool leftMousePressed = false;
+	//bool leftMousePressed = false;
 
 	while(window.isOpen())
 	{
@@ -122,6 +133,29 @@ int main()
 			//if(event.type == sf::Event::Closed) window.close();
 		}
 
+		// close window
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+				window.close();
+		}
+
+		/* initial rectangle spawning */
+		if (!gameStart){
+			for (int i = 0; i < 20; i++){
+				sf::Vector2f position;
+				position.x = rand() % windowSizeX;
+				position.y = rand() % windowSizeY;
+				MyRectangle r(world, dynamicBoxSize, position);
+				r.setOutlineThickness(1);
+				r.setOutlineColor(sf::Color::Black);
+				r.setFillColor(sf::Color(100, 100, 200));
+				boxList.push_back(r);
+			}
+			gameStart = true;
+		}
+		
+
+		
+		/*
 		// This is input handling without poll event
 		// READ SFML DOCUMENTATION!
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -129,6 +163,9 @@ int main()
 			if(!leftMousePressed)
 			{
 				sf::Vector2f pos = sf::Vector2f( sf::Mouse::getPosition(window) );
+				float x = pos.x;
+				float y = pos.y;
+				cout << pos.x << " " << pos.y << endl;
 				MyRectangle r(world, dynamicBoxSize, pos);
 				r.setOutlineThickness(1);
 				r.setOutlineColor(sf::Color::Black);
@@ -141,6 +178,24 @@ int main()
 		{
 			leftMousePressed = false;
 		}
+		*/
+
+		/* spawn 5 rectangles every 1 second */
+		currentTime += fixedUpdateClock.getElapsedTime().asSeconds();
+		if (currentTime >= spawnTime){
+			for (int i = 0; i < 1; i++){
+				sf::Vector2f position;
+				position.x = rand() % windowSizeX;
+				position.y = 0;
+				MyRectangle r(world, dynamicBoxSize, position);
+				r.setOutlineThickness(1);
+				r.setOutlineColor(sf::Color::Black);
+				r.setFillColor(sf::Color(100, 100, 200));
+				boxList.push_back(r);
+			}
+			currentTime = 0;
+		}
+
 
 		// We get the time elapsed since last frame and add it to timeElapsedSinceLastFrame
 		timeElapsedSinceLastFrame += fixedUpdateClock.restart().asSeconds();
@@ -148,6 +203,7 @@ int main()
 		// If sufficient time has elapsed, we update the physics
 		if(timeElapsedSinceLastFrame >= fixedTimeStep)
 		{
+
 			// Step is used to update physics position/rotation
 			world.Step(
 				fixedTimeStep,		//update	frequency

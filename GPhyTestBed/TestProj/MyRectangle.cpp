@@ -13,7 +13,7 @@ MyRectangle::MyRectangle(b2World& world,
                          )
 {
 	rect_ = sf::RectangleShape(size);
-	rect_.setOrigin(sf::Vector2f(size.x/2,size.y/2));
+	rect_.setOrigin(sf::Vector2f(size.x/2, size.y));
 	rect_.setFillColor(sf::Color(255, 255, 255, 255));
 	rect_.setOutlineThickness(1);
 	rect_.setOutlineColor(sf::Color::Black);
