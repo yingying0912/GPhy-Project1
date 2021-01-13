@@ -1,3 +1,6 @@
+#ifndef MYRECTANGLE_H
+#define MYRECTANGLE_H
+
 #include <SFML/Graphics.hpp>
 #include <Box2D/Box2D.h>
 
@@ -23,3 +26,5 @@ class MyRectangle
 	void update();
 	sf::Shape& getShape();
 };
+
+#endif

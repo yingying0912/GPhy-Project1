@@ -5,12 +5,10 @@
 // Why? Refer to Computer Graphics
 static const float PIXEL_PER_METER = 32.0f;
 
-MyRectangle::MyRectangle(b2World& world,
-                         sf::Vector2f size,
-								 sf::Vector2f position,
-								 float rotation,
-                         bool isDynamic
-                         )
+//MyRectangle::MyRectangle();
+
+MyRectangle::MyRectangle(b2World& world, sf::Vector2f size, sf::Vector2f position,
+						float rotation,bool isDynamic)
 {
 	rect_ = sf::RectangleShape(size);
 	rect_.setOrigin(sf::Vector2f(size.x/2, size.y));

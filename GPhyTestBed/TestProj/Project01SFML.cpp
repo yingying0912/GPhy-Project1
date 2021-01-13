@@ -106,6 +106,11 @@ int main()
 
 	//flag for one time rectangle spawning when game launched
 	bool gameStart = false;
+	MyRectangle player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY), 0.0, false);
+	player.setOutlineThickness(1);
+	player.setOutlineColor(sf::Color::Black);
+	player.setFillColor(sf::Color(0, 255, 0));
+	
 
 	/*
 		Define Properties of Fonts
@@ -217,6 +222,8 @@ int main()
 			//leftBorder.update();
 			//rightBorder.update();
 
+			player.update();
+
 			for(int i = 0; i < boxList.size(); i++){
 				boxList[i].update();
 			}
@@ -239,6 +246,8 @@ int main()
 		{
 			window.draw(boxList[i].getShape());
 		}
+
+		window.draw(player.getShape());
 
 		ostringstream boxListStream;
 		boxListStream << boxList.size();
