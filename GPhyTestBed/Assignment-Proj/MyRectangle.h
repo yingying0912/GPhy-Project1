@@ -1,3 +1,20 @@
+/********************************************
+
+	FILENAME -> MyRectangle.H
+
+	Course : TGD2251 Game Physics
+	Session: Trimester 2, 2020/21
+
+	ID and Name #1 : 1171100974 Yee Cui Ying
+	Contacts #1 : 010-225 9059 EMailOfStud1
+
+	ID and Name #2 : 1171100663 Muhammad Syafeeq bin Mohd Fauzi
+	Contacts #2 : 011-23042570 fauzisyafeeq@gmail.com
+
+********************************************/
+
+
+
 #ifndef MYRECTANGLE_H
 #define MYRECTANGLE_H
 
