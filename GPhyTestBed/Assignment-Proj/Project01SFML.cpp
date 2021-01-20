@@ -9,6 +9,7 @@
 
 #include "MyRectangle.h"
 #include "Player.h"
+#include "Asteroid.h"
 
 using namespace std;
 
@@ -69,50 +70,55 @@ int main()
 	/*
 		Define/Create Border Areas
 		-> Define with Window Size
-	*/
+	
 	sf::Vector2f horizontalBorderSize(windowSizeX, windowBorderSize);
 	sf::Vector2f verticalBorderSize(windowBorderSize, windowSizeY-windowBorderSize*2);
 	sf::Vector2f topBorderPos(windowSizeX/2, windowBorderSize/2);
 	sf::Vector2f bottomBorderPos(windowSizeX/2, windowSizeY-windowBorderSize/2);
 	sf::Vector2f leftBorderPos(windowBorderSize/2, windowSizeY/2);
 	sf::Vector2f rightBorderPos(windowSizeX-windowBorderSize/2, windowSizeY/2);
-
-	
-	//MyRectangle topBorder(world, horizontalBorderSize, topBorderPos, 0.0, false);
- //           	topBorder.setOutlineThickness(-1);
-	//            topBorder.setOutlineColor(sf::Color::Black);
-	//            topBorder.setFillColor(sf::Color(100, 100, 100));
-
-	//MyRectangle bottomBorder(world, horizontalBorderSize, bottomBorderPos, 0.0, false);
- //             bottomBorder.setOutlineThickness(-1);
- //             bottomBorder.setOutlineColor(sf::Color::Black);
- //             bottomBorder.setFillColor(sf::Color(100, 100, 100));
-
-	//MyRectangle leftBorder(world, verticalBorderSize, leftBorderPos, 0.0, false);
- //             leftBorder.setOutlineThickness(-1);
- //             leftBorder.setOutlineColor(sf::Color::Black);
- //             leftBorder.setFillColor(sf::Color(100, 100, 100));
-
-	//MyRectangle rightBorder(world, verticalBorderSize, rightBorderPos, 0.0, false);
- //             rightBorder.setOutlineThickness(-1);
- //             rightBorder.setOutlineColor(sf::Color::Black);
- //             rightBorder.setFillColor(sf::Color(100, 100, 100));
+	*/
 
 	/*
+<><><><><><><><><><><><><><><><><><>
+	MyRectangle topBorder(world, horizontalBorderSize, topBorderPos, 0.0, false);
+            	topBorder.setOutlineThickness(-1);
+	            topBorder.setOutlineColor(sf::Color::Black);
+	            topBorder.setFillColor(sf::Color(100, 100, 100));
+
+	MyRectangle bottomBorder(world, horizontalBorderSize, bottomBorderPos, 0.0, false);
+              bottomBorder.setOutlineThickness(-1);
+              bottomBorder.setOutlineColor(sf::Color::Black);
+              bottomBorder.setFillColor(sf::Color(100, 100, 100));
+
+	MyRectangle leftBorder(world, verticalBorderSize, leftBorderPos, 0.0, false);
+              leftBorder.setOutlineThickness(-1);
+              leftBorder.setOutlineColor(sf::Color::Black);
+              leftBorder.setFillColor(sf::Color(100, 100, 100));
+
+	MyRectangle rightBorder(world, verticalBorderSize, rightBorderPos, 0.0, false);
+              rightBorder.setOutlineThickness(-1);
+              rightBorder.setOutlineColor(sf::Color::Black);
+              rightBorder.setFillColor(sf::Color(100, 100, 100));
+<><><><><><><><><><><><><><><><><><>
+
 		Create Vector/List of Boxes
 		-> Use to Add Box that spawn
 	*/
 	vector<MyRectangle> boxList;
+	vector<Asteroid> astList;
 	sf::Vector2f dynamicBoxSize(32,32);
+	float myRadius = 12.5f;
 
 	//flag for one time rectangle spawning when game launched
 	bool gameStart = false;
-	Player player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY));
+	Player player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY), 0);
+	
 	/*
-	MyRectangle player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY), 0.0, false);
-	player.setOutlineThickness(1);
-	player.setOutlineColor(sf::Color::Black);
-	player.setFillColor(sf::Color(0, 255, 0));
+		MyRectangle player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY), 0.0, false);
+		player.setOutlineThickness(1);
+		player.setOutlineColor(sf::Color::Black);
+		player.setFillColor(sf::Color(0, 255, 0));
 	*/
 	
 
@@ -126,6 +132,12 @@ int main()
 	text.setCharacterSize(16);
 	text.setPosition(3, -3);
 	text.setFillColor(sf::Color::White);
+
+	sf::Text text2;
+	text2.setFont(font);
+	text2.setCharacterSize(16);
+	text2.setPosition(3, 7);
+	text2.setFillColor(sf::Color::White);
 
 	// A buffer to check whether left mouse button has been clicked before or not
 	//bool leftMousePressed = false;
@@ -149,7 +161,7 @@ int main()
 
 		/* initial rectangle spawning */
 		if (!gameStart){
-			for (int i = 0; i < 20; i++){
+			for (int i = 0; i < 10; i++){
 				sf::Vector2f position;
 				position.x = rand() % windowSizeX;
 				position.y = rand() % windowSizeY;
@@ -159,12 +171,21 @@ int main()
 				r.setFillColor(sf::Color(100, 100, 200));
 				boxList.push_back(r);
 			}
+
+			for (int i = 0; i < 10; i++) {
+				sf::Vector2f position;
+				position.x = rand() % windowSizeX;
+				position.y = rand() % windowSizeY;
+				Asteroid Ast(world, myRadius, position);
+				Ast.setOutlineThickness(1);
+				Ast.setOutlineColor(sf::Color::Black);
+				Ast.setFillColor(sf::Color(100, 100, 200));
+				astList.push_back(Ast);
+			}
 			gameStart = true;
 		}
 		
-
-		
-		/*
+	/*
 		// This is input handling without poll event
 		// READ SFML DOCUMENTATION!
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -187,7 +208,7 @@ int main()
 		{
 			leftMousePressed = false;
 		}
-		*/
+	*/
 
 		/* spawn 5 rectangles every 1 second */
 		currentTime += fixedUpdateClock.getElapsedTime().asSeconds();
@@ -202,6 +223,17 @@ int main()
 				r.setFillColor(sf::Color(100, 100, 200));
 				boxList.push_back(r);
 			}
+			for (int i = 0; i < 1; i++) {
+				sf::Vector2f position;
+				position.x = rand() % windowSizeX;
+				position.y = 0;
+				Asteroid Ast(world, myRadius, position);
+				Ast.setOutlineThickness(1);
+				Ast.setOutlineColor(sf::Color::Black);
+				Ast.setFillColor(sf::Color(100, 100, 200));
+				astList.push_back(Ast);
+			}
+
 			currentTime = 0;
 		}
 
@@ -226,10 +258,15 @@ int main()
 			//leftBorder.update();
 			//rightBorder.update();
 
-			player.player.update();
+			player.update();
+			//player.player.update();
 
 			for(int i = 0; i < boxList.size(); i++){
 				boxList[i].update();
+			}
+
+			for (int i = 0; i < astList.size(); i++) {
+				astList[i].update();
 			}
 
 			// timeElapsedSinceLastFrame can be higher than fixedTimeStep,
@@ -251,12 +288,26 @@ int main()
 			window.draw(boxList[i].getShape());
 		}
 
-		window.draw(player.player.getShape());
+		for (int i = 0; i < astList.size(); i++)
+		{
+			window.draw(astList[i].getShape());
+		}
+
+		window.draw(player.getShape());
 
 		ostringstream boxListStream;
 		boxListStream << boxList.size();
+
+		ostringstream astListStream;
+		astListStream << astList.size();
+
 		text.setString("Number of boxes: "+boxListStream.str());
 		window.draw(text);
+
+		text2.setString("Number of Asteroids: " + astListStream.str());
+		window.draw(text2);
+
+
 		window.display();
 	}
 
