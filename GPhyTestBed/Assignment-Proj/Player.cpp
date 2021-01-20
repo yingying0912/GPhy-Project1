@@ -32,14 +32,43 @@ Player::Player(b2World& world, sf::Vector2f size, sf::Vector2f position,
 	bodyPlayer = world.CreateBody(&bodyDefPlayer);
 	bodyPlayer->CreateFixture(&bodyFixtureDefPlayer);
 	
-	bodyPlayer->SetGravityScale(-1);
+	bodyPlayer->SetGravityScale(0.5);
 }
 
 void Player::update()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
 	{
-		cout << "A is pressed" << endl;
+		cout << "Key " << sf::Keyboard::Space << ": Space is Pressed." << endl
+			<< " Booster Launched! " << endl;
+		bodyPlayer->ApplyForce(b2Vec2(0, -2), bodyPlayer->GetWorldCenter(), true);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
+	{
+		cout << "Key " << sf::Keyboard::A << ": A is Pressed." << endl
+			<< " Going Left " << endl;
+		bodyPlayer->ApplyForce(b2Vec2(-1.5, 0), bodyPlayer->GetWorldCenter(), true);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		cout << "Key " << sf::Keyboard::D << ": D is Pressed." << endl
+			<< " Going Right " << endl;
+		bodyPlayer->ApplyForce(b2Vec2(1.5, 0), bodyPlayer->GetWorldCenter(), true);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		cout << "Key " << sf::Keyboard::W << ": W is Pressed." << endl
+			<< " Speed Up " << endl;
+		bodyPlayer->ApplyForce(b2Vec2(0, -1), bodyPlayer->GetWorldCenter(), true);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		cout << "Key " << sf::Keyboard::R << ": R is Pressed." << endl
+			<< " Reset Location " << endl;
+		bodyDefPlayer.position = b2Vec2(
+			25 / PIXEL_PER_METER, 25 / PIXEL_PER_METER
+		);
+		//bodyPlayer->ApplyForce(b2Vec2(0, -2), bodyPlayer->GetWorldCenter(), true);
 	}
 
 	// Box2D uses radians for rotation, SFML uses degree

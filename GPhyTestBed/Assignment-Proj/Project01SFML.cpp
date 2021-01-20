@@ -108,19 +108,10 @@ int main()
 	vector<MyRectangle> boxList;
 	vector<Asteroid> astList;
 	sf::Vector2f dynamicBoxSize(32,32);
-	float myRadius = 12.5f;
 
 	//flag for one time rectangle spawning when game launched
 	bool gameStart = false;
 	Player player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY), 0);
-	
-	/*
-		MyRectangle player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY), 0.0, false);
-		player.setOutlineThickness(1);
-		player.setOutlineColor(sf::Color::Black);
-		player.setFillColor(sf::Color(0, 255, 0));
-	*/
-	
 
 	/*
 		Define Properties of Fonts
@@ -161,6 +152,8 @@ int main()
 
 		/* initial rectangle spawning */
 		if (!gameStart){
+			/*
+			
 			for (int i = 0; i < 10; i++){
 				sf::Vector2f position;
 				position.x = rand() % windowSizeX;
@@ -171,11 +164,14 @@ int main()
 				r.setFillColor(sf::Color(100, 100, 200));
 				boxList.push_back(r);
 			}
+			
+			*/
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 20; i++) {
 				sf::Vector2f position;
 				position.x = rand() % windowSizeX;
 				position.y = rand() % windowSizeY;
+				float myRadius = rand() % 15 + 2;
 				Asteroid Ast(world, myRadius, position);
 				Ast.setOutlineThickness(1);
 				Ast.setOutlineColor(sf::Color::Black);
@@ -213,6 +209,8 @@ int main()
 		/* spawn 5 rectangles every 1 second */
 		currentTime += fixedUpdateClock.getElapsedTime().asSeconds();
 		if (currentTime >= spawnTime){
+			/*
+			
 			for (int i = 0; i < 1; i++){
 				sf::Vector2f position;
 				position.x = rand() % windowSizeX;
@@ -223,10 +221,14 @@ int main()
 				r.setFillColor(sf::Color(100, 100, 200));
 				boxList.push_back(r);
 			}
+			
+			*/
+			
 			for (int i = 0; i < 1; i++) {
 				sf::Vector2f position;
 				position.x = rand() % windowSizeX;
 				position.y = 0;
+				float myRadius = rand() % 20 + 5;
 				Asteroid Ast(world, myRadius, position);
 				Ast.setOutlineThickness(1);
 				Ast.setOutlineColor(sf::Color::Black);
@@ -252,18 +254,21 @@ int main()
                 3					//position	Iterations  
             );
 
-			// Update the objects that uses physics
+			// ------ Update the objects that uses physics
 			//topBorder.update();
 			//bottomBorder.update();
 			//leftBorder.update();
 			//rightBorder.update();
 
 			player.update();
-			//player.player.update();
 
+			/*
+			
 			for(int i = 0; i < boxList.size(); i++){
 				boxList[i].update();
 			}
+
+			*/
 
 			for (int i = 0; i < astList.size(); i++) {
 				astList[i].update();
@@ -282,11 +287,15 @@ int main()
 		//window.draw(bottomBorder.getShape());
 		//window.draw(  leftBorder.getShape());
 		//window.draw( rightBorder.getShape());
+		/*
 		
 		for(int i = 0; i < boxList.size(); i++)
 		{
 			window.draw(boxList[i].getShape());
 		}
+		
+		*/
+		
 
 		for (int i = 0; i < astList.size(); i++)
 		{
