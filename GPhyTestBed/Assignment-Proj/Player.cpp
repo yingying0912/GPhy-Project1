@@ -6,10 +6,10 @@
 	Session: Trimester 2, 2020/21
 
 	ID and Name #1 : 1171100974 Yee Cui Ying
-	Contacts #1 : 010-225 9059 EMailOfStud1
+	Contacts #1 : 010-225 9059 1171100974@student.mmu.edu.my
 
 	ID and Name #2 : 1171100663 Muhammad Syafeeq bin Mohd Fauzi
-	Contacts #2 : 011-23042570 fauzisyafeeq@gmail.com
+	Contacts #2 : 011-23042570 1171100663@student.mmu.edu.my
 
 ********************************************/
 
@@ -54,52 +54,31 @@ Player::Player(b2World& world, sf::Vector2f size, sf::Vector2f position,
 	
 	bodyPlayer->SetGravityScale(0);
 
-	health = 3;
+	health = 10;
 	currentHealth = health;
 }
 
 void Player::update()
 {
-	/**
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
-	{
-		cout << "Key " << sf::Keyboard::Space << ": Space is Pressed." << endl
-			<< " Booster Launched! " << endl;
-		bodyPlayer->ApplyForce(b2Vec2(0, -2), bodyPlayer->GetWorldCenter(), true);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
-	{
-		cout << "Key " << sf::Keyboard::A << ": A is Pressed." << endl
-			<< " Going Left " << endl;
-		bodyPlayer->ApplyForce(b2Vec2(-1.5, 0), bodyPlayer->GetWorldCenter(), true);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		cout << "Key " << sf::Keyboard::D << ": D is Pressed." << endl
-			<< " Going Right " << endl;
-		bodyPlayer->ApplyForce(b2Vec2(1.5, 0), bodyPlayer->GetWorldCenter(), true);
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		cout << "Key " << sf::Keyboard::W << ": W is Pressed." << endl
-			<< " Speed Up " << endl;
-		//bodyPlayer->ApplyForce(b2Vec2(0, -1), bodyPlayer->GetWorldCenter(), true);
-		Asteroid.moveForward();
-	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
-	{
-		cout << "Key " << sf::Keyboard::R << ": R is Pressed." << endl
-			<< " Reset Location " << endl;
-		bodyDefPlayer.position = b2Vec2(
-			25 / PIXEL_PER_METER, 25 / PIXEL_PER_METER
-		);
-		//bodyPlayer->ApplyForce(b2Vec2(0, -2), bodyPlayer->GetWorldCenter(), true);
-	}
-	*/
 	// Box2D uses radians for rotation, SFML uses degree
 	myPlayer.setRotation(bodyPlayer->GetAngle() * 180 / b2_pi);
 	myPlayer.setPosition(bodyPlayer->GetPosition().x*PIXEL_PER_METER, bodyPlayer->GetPosition().y*PIXEL_PER_METER);
 
+}
+
+void Player::update(float windowX, float windowY)
+{
+	// Checking Breaking Wall
+	sf::Vector2f playerData = this->getShape().getPosition();
+	if (playerData.y > windowY) {
+		bodyPlayer->ApplyForce(b2Vec2(0, -1), bodyPlayer->GetWorldCenter(), true);
+	}
+	if (playerData.x > windowX) {
+		bodyPlayer->ApplyForce(b2Vec2(-1, 0), bodyPlayer->GetWorldCenter(), true);
+	}
+	if (playerData.x < 0) { 
+		bodyPlayer->ApplyForce(b2Vec2(1, 0), bodyPlayer->GetWorldCenter(), true);
+	}
 }
 
 void Player::update(b2Vec2 force){
@@ -137,8 +116,19 @@ void Player::damaged(){
 }
 
 void Player::reset(float x, float y){
-	myPlayer.setPosition(x, y);
+	//myPlayer.setPosition(x, y);
+	bodyDefPlayer.position = b2Vec2(
+		25 / PIXEL_PER_METER, 25 / PIXEL_PER_METER
+	);
 	bodyPlayer->ApplyForce(b2Vec2(0,0), bodyPlayer->GetWorldCenter(), true);
+	bodyPlayer->SetLinearVelocity(b2Vec2(0, 0));
+	bodyPlayer->SetAngularVelocity(0);
+	bodyPlayer->SetFixedRotation(true);
+}
+
+void Player::reset(sf::Vector2f position) {
+	bodyPlayer->SetTransform(b2Vec2(position.x, position.y), 180.f);
+	bodyPlayer->ApplyForce(b2Vec2(0, 0), bodyPlayer->GetWorldCenter(), true);
 }
 
 int Player::getCurrentHealth(){

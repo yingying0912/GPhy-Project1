@@ -6,14 +6,17 @@
 	Session: Trimester 2, 2020/21
 
 	ID and Name #1 : 1171100974 Yee Cui Ying
-	Contacts #1 : 010-225 9059 EMailOfStud1
+	Contacts #1 : 010-225 9059 1171100974@student.mmu.edu.my
 
 	ID and Name #2 : 1171100663 Muhammad Syafeeq bin Mohd Fauzi
-	Contacts #2 : 011-23042570 fauzisyafeeq@gmail.com
+	Contacts #2 : 011-23042570 1171100663@student.mmu.edu.my
 
 ********************************************/
 
 #include "Asteroid.h"
+#include <iostream>
+
+using namespace std;
 
 // Box2D uses meters for simulation, so we need to set how many pixels representing one meter
 // We prefer a 2^n value (e.g. 1,2,4,8,16,32,64 etc) because of reasons
@@ -75,10 +78,17 @@ void Asteroid::update()
 
 sf::Shape& Asteroid::getShape()
 {
-	// TODO: insert return statement here
 	return circle_;
 }
 
 void Asteroid::moveForward(){
 	body_->ApplyForce(b2Vec2(0, 1), body_->GetWorldCenter(), true);
+}
+
+b2Body* Asteroid::getBody() {
+	return body_;
+}
+
+b2FixtureDef Asteroid::getBodyFix() {
+	return bodyFixtureDef_;
 }
