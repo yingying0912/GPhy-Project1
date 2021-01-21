@@ -39,7 +39,11 @@ class Asteroid
 		void setTexture(sf::Texture* textures);
 
 		void update();
+		float getPositionX();
+		float getPositionY();
+
 		sf::Shape& getShape();
+		void moveForward();
 };
 
 #endif

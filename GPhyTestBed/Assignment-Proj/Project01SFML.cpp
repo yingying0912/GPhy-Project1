@@ -30,6 +30,9 @@
 
 using namespace std;
 
+void update(Player player, vector<Asteroid> astList);
+bool collision(Player player, vector<Asteroid> astList);
+
 sf::Font loadFont(const string& fontFilename = "resources/04b03.ttf")
 {
 	sf::Font myFont;
@@ -276,8 +279,7 @@ int main()
 			//bottomBorder.update();
 			//leftBorder.update();
 			//rightBorder.update();
-
-			player.update();
+			update(player, astList);
 
 			/*
 			
@@ -286,10 +288,16 @@ int main()
 			}
 
 			*/
+			player.update();
 
 			for (int i = 0; i < astList.size(); i++) {
 				astList[i].update();
 			}
+
+			if (collision){
+				cout << "Collision occurred" << endl;
+			}
+			
 
 			// timeElapsedSinceLastFrame can be higher than fixedTimeStep,
 			// so we deduct timeElapsedSinceLastFrame with fixedTimeStep
@@ -338,4 +346,56 @@ int main()
 	}
 
 	return 0;
+}
+
+void update(Player player, vector<Asteroid> astList){
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
+	{
+		cout << "Key " << sf::Keyboard::Space << ": Space is Pressed." << endl
+			<< " Booster Launched! " << endl;
+		player.update(b2Vec2(0,-2));
+		//bodyPlayer->ApplyForce(b2Vec2(0, -2), bodyPlayer->GetWorldCenter(), true);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
+	{
+		cout << "Key " << sf::Keyboard::A << ": A is Pressed." << endl
+			<< " Going Left " << endl;
+		player.update(b2Vec2(-1.5,0));
+		//bodyPlayer->ApplyForce(b2Vec2(-1.5, 0), bodyPlayer->GetWorldCenter(), true);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		cout << "Key " << sf::Keyboard::D << ": D is Pressed." << endl
+			<< " Going Right " << endl;
+		player.update(b2Vec2(1.5,0));
+		//bodyPlayer->ApplyForce(b2Vec2(1.5, 0), bodyPlayer->GetWorldCenter(), true);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		cout << "Key " << sf::Keyboard::W << ": W is Pressed." << endl
+			<< " Speed Up " << endl;
+		for (int i = 0; i < astList.size(); i++) {
+			astList[i].moveForward();
+		}
+		//bodyPlayer->ApplyForce(b2Vec2(0, -1), bodyPlayer->GetWorldCenter(), true);
+		//Asteroid.moveForward();
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		cout << "Key " << sf::Keyboard::R << ": R is Pressed." << endl
+			<< " Reset Location " << endl;
+		//bodyDefPlayer.position = b2Vec2(
+		//	25 / PIXEL_PER_METER, 25 / PIXEL_PER_METER
+		//);
+		//bodyPlayer->ApplyForce(b2Vec2(0, -2), bodyPlayer->GetWorldCenter(), true);
+	}
+}
+
+bool collision(Player player, vector<Asteroid> astList){
+	//for (int i = 0; i < astList.size(); i++){
+		//if (player.getShape().intersects(astList[i].getShape()))
+			//return true;
+	//}
+	return false;
 }

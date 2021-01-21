@@ -39,6 +39,11 @@ class Player{
 		void setTexture(sf::Texture* textures);
 
 		void update();
+		void update(b2Vec2 force);
+
+		float getPositionX();
+		float getPositionY();
+
 		sf::Shape& getShape();
 };
 

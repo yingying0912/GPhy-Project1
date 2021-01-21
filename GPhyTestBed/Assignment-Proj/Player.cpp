@@ -16,6 +16,7 @@
 
 
 #include "Player.h"
+#include "Asteroid.h"
 #include <iostream>
 
 using namespace std;
@@ -49,11 +50,12 @@ Player::Player(b2World& world, sf::Vector2f size, sf::Vector2f position,
 	bodyPlayer = world.CreateBody(&bodyDefPlayer);
 	bodyPlayer->CreateFixture(&bodyFixtureDefPlayer);
 	
-	bodyPlayer->SetGravityScale(0.5);
+	bodyPlayer->SetGravityScale(0);
 }
 
 void Player::update()
 {
+	/**
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
 	{
 		cout << "Key " << sf::Keyboard::Space << ": Space is Pressed." << endl
@@ -76,7 +78,8 @@ void Player::update()
 	{
 		cout << "Key " << sf::Keyboard::W << ": W is Pressed." << endl
 			<< " Speed Up " << endl;
-		bodyPlayer->ApplyForce(b2Vec2(0, -1), bodyPlayer->GetWorldCenter(), true);
+		//bodyPlayer->ApplyForce(b2Vec2(0, -1), bodyPlayer->GetWorldCenter(), true);
+		Asteroid.moveForward();
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
@@ -87,11 +90,15 @@ void Player::update()
 		);
 		//bodyPlayer->ApplyForce(b2Vec2(0, -2), bodyPlayer->GetWorldCenter(), true);
 	}
-
+	*/
 	// Box2D uses radians for rotation, SFML uses degree
 	myPlayer.setRotation(bodyPlayer->GetAngle() * 180 / b2_pi);
 	myPlayer.setPosition(bodyPlayer->GetPosition().x*PIXEL_PER_METER, bodyPlayer->GetPosition().y*PIXEL_PER_METER);
 
+}
+
+void Player::update(b2Vec2 force){
+	bodyPlayer->ApplyForce(force, bodyPlayer->GetWorldCenter(), true);
 }
 
 void Player::setFillColor(sf::Color col)
@@ -118,4 +125,12 @@ sf::Shape& Player::getShape()
 {
 	// TODO: insert return statement here
 	return myPlayer;
+}
+
+float Player::getPositionX(){
+	return bodyPlayer->GetPosition().x*PIXEL_PER_METER;
+}
+
+float Player::getPositionY(){
+	return bodyPlayer->GetPosition().y*PIXEL_PER_METER;
 }
