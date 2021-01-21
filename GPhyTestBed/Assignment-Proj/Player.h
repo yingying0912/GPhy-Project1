@@ -30,13 +30,14 @@ class Player{
 
 	public:
 		Player(b2World& world, sf::Vector2f size, sf::Vector2f position,
-			float rotation);
+			float rotation, sf::Color color, int thickness, sf::Color outline, sf::Texture* texture);
 
 		void setFillColor(sf::Color col);
 		void setOutlineThickness(float thickness);
 		void setOutlineColor(sf::Color col);
 
 		void setTexture(sf::Texture* textures);
+		void rotate(float angle);
 
 		void update();
 		void update(b2Vec2 force);

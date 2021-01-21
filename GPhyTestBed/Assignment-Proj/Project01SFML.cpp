@@ -45,6 +45,18 @@ sf::Font loadFont(const string& fontFilename = "resources/04b03.ttf")
 	return myFont;
 }
 
+sf::Texture loadImages(string fontFilename)
+{
+	sf::Texture myImages;
+	if (!myImages.loadFromFile(fontFilename))
+	{
+		cout << "Could not load Font -> " << fontFilename << endl;
+		exit(1);
+	}
+
+	return myImages;
+}
+
 int main()
 {
 	// random algorithm
@@ -88,40 +100,6 @@ int main()
 	b2World world(gravity);
 
 	/*
-		Define/Create Border Areas
-		-> Define with Window Size
-	
-	sf::Vector2f horizontalBorderSize(windowSizeX, windowBorderSize);
-	sf::Vector2f verticalBorderSize(windowBorderSize, windowSizeY-windowBorderSize*2);
-	sf::Vector2f topBorderPos(windowSizeX/2, windowBorderSize/2);
-	sf::Vector2f bottomBorderPos(windowSizeX/2, windowSizeY-windowBorderSize/2);
-	sf::Vector2f leftBorderPos(windowBorderSize/2, windowSizeY/2);
-	sf::Vector2f rightBorderPos(windowSizeX-windowBorderSize/2, windowSizeY/2);
-	*/
-
-	/*
-<><><><><><><><><><><><><><><><><><>
-	MyRectangle topBorder(world, horizontalBorderSize, topBorderPos, 0.0, false);
-            	topBorder.setOutlineThickness(-1);
-	            topBorder.setOutlineColor(sf::Color::Black);
-	            topBorder.setFillColor(sf::Color(100, 100, 100));
-
-	MyRectangle bottomBorder(world, horizontalBorderSize, bottomBorderPos, 0.0, false);
-              bottomBorder.setOutlineThickness(-1);
-              bottomBorder.setOutlineColor(sf::Color::Black);
-              bottomBorder.setFillColor(sf::Color(100, 100, 100));
-
-	MyRectangle leftBorder(world, verticalBorderSize, leftBorderPos, 0.0, false);
-              leftBorder.setOutlineThickness(-1);
-              leftBorder.setOutlineColor(sf::Color::Black);
-              leftBorder.setFillColor(sf::Color(100, 100, 100));
-
-	MyRectangle rightBorder(world, verticalBorderSize, rightBorderPos, 0.0, false);
-              rightBorder.setOutlineThickness(-1);
-              rightBorder.setOutlineColor(sf::Color::Black);
-              rightBorder.setFillColor(sf::Color(100, 100, 100));
-<><><><><><><><><><><><><><><><><><>
-
 		Create Vector/List of Boxes
 		-> Use to Add Box that spawn
 	*/
@@ -131,8 +109,9 @@ int main()
 
 	//flag for one time rectangle spawning when game launched
 	bool gameStart = false;
-	Player player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY), 0);
-
+	sf::Texture p_Texture = loadImages("resources/Player_32.png");
+	Player player(world, dynamicBoxSize, sf::Vector2f(windowSizeX/2, windowSizeY), 0, sf::Color::White, 1, sf::Color::Black, &p_Texture);
+	player.setOutlineThickness(0);
 	/*
 		Define Properties of Fonts
 		-> Sizes, Font Design, Position, Color
@@ -172,30 +151,29 @@ int main()
 
 		/* initial rectangle spawning */
 		if (!gameStart){
-			/*
-			
-			for (int i = 0; i < 10; i++){
-				sf::Vector2f position;
-				position.x = rand() % windowSizeX;
-				position.y = rand() % windowSizeY;
-				MyRectangle r(world, dynamicBoxSize, position);
-				r.setOutlineThickness(1);
-				r.setOutlineColor(sf::Color::Black);
-				r.setFillColor(sf::Color(100, 100, 200));
-				boxList.push_back(r);
-			}
-			
-			*/
 
 			for (int i = 0; i < 20; i++) {
 				sf::Vector2f position;
 				position.x = rand() % windowSizeX;
 				position.y = rand() % windowSizeY;
 				float myRadius = rand() % 15 + 2;
-				Asteroid Ast(world, myRadius, position);
-				Ast.setOutlineThickness(1);
-				Ast.setOutlineColor(sf::Color::Black);
-				Ast.setFillColor(sf::Color(100, 100, 200));
+
+				string astFile;
+				if (myRadius >= 8.f) { 
+					astFile = "resources/Meteroid_8.png"; 
+					cout << "my radius is more than 8" << endl; 
+				}
+				else if (myRadius >= 4.f) { 
+					astFile = "resources/Meteroid_4.png";  
+					cout << "my radius is more than 4" << endl;
+				}
+				else if (myRadius >= 2.f) { 
+					astFile = "resources/Meteroid_2.png";   
+					cout << "my radius is more than 2" << endl;
+				}
+
+				sf::Texture ast_T = loadImages(astFile);
+				Asteroid Ast(world, myRadius, position, sf::Color(100, 100, 200), 1, sf::Color::Black, &ast_T);
 				astList.push_back(Ast);
 			}
 			gameStart = true;
@@ -229,30 +207,38 @@ int main()
 		/* spawn 5 rectangles every 1 second */
 		currentTime += fixedUpdateClock.getElapsedTime().asSeconds();
 		if (currentTime >= spawnTime){
-			/*
-			
-			for (int i = 0; i < 1; i++){
-				sf::Vector2f position;
-				position.x = rand() % windowSizeX;
-				position.y = 0;
-				MyRectangle r(world, dynamicBoxSize, position);
-				r.setOutlineThickness(1);
-				r.setOutlineColor(sf::Color::Black);
-				r.setFillColor(sf::Color(100, 100, 200));
-				boxList.push_back(r);
-			}
-			
-			*/
 			
 			for (int i = 0; i < 1; i++) {
 				sf::Vector2f position;
 				position.x = rand() % windowSizeX;
 				position.y = 0;
-				float myRadius = rand() % 20 + 5;
-				Asteroid Ast(world, myRadius, position);
-				Ast.setOutlineThickness(1);
-				Ast.setOutlineColor(sf::Color::Black);
-				Ast.setFillColor(sf::Color(100, 100, 200));
+				float myRadius = rand() % 32 + 5;
+
+				string astFile;
+				if (myRadius >= 32.f) {
+					astFile = "resources/Meteroid_32.png";
+					cout << "my radius is more than 32" << endl;
+				}
+				else if (myRadius >= 24.f) {
+					astFile = "resources/Meteroid_24.png";
+					cout << "my radius is more than 24" << endl;
+				}
+				else if (myRadius >= 8.f) {
+					astFile = "resources/Meteroid_8.png";
+					cout << "my radius is more than 8" << endl;
+				}
+				else if (myRadius >= 4.f) { 
+					astFile = "resources/Meteroid_4.png";
+					cout << "my radius is more than 4" << endl;
+				}
+				else if (myRadius >= 2.f) { 
+					astFile = "resources/Meteroid_2.png";
+					cout << "my radius is more than 2" << endl;
+				}
+
+				sf::Texture ast_T = loadImages(astFile);
+				Asteroid Ast(world, myRadius, position, sf::Color(100, 100, 200), 1, sf::Color::Black, &ast_T);
+
 				astList.push_back(Ast);
 			}
 
@@ -275,29 +261,26 @@ int main()
             );
 
 			// ------ Update the objects that uses physics
-			//topBorder.update();
-			//bottomBorder.update();
-			//leftBorder.update();
-			//rightBorder.update();
 			update(player, astList);
-
-			/*
-			
-			for(int i = 0; i < boxList.size(); i++){
-				boxList[i].update();
-			}
-
-			*/
 			player.update();
 
 			for (int i = 0; i < astList.size(); i++) {
 				astList[i].update();
 			}
 
-			if (collision){
-				cout << "Collision occurred" << endl;
+			// Check Intersections!
+			for (int i = 0; i < astList.size(); i++) {
+				if (player.getShape().getGlobalBounds().intersects(astList[i].getShape().getGlobalBounds())) {
+					astList[i].setFillColor(sf::Color::White);
+				}
+				else {
+					astList[i].setFillColor(sf::Color(100, 100, 200));
+				}
 			}
-			
+
+			/*if (collision){
+				cout << "Collision occurred" << endl;
+			}*/
 
 			// timeElapsedSinceLastFrame can be higher than fixedTimeStep,
 			// so we deduct timeElapsedSinceLastFrame with fixedTimeStep
@@ -308,19 +291,6 @@ int main()
 		window.clear(sf::Color(100, 149, 237));	// CORNFLOWER BLUE!
 
 		// Render all objects
-		//window.draw(   topBorder.getShape());
-		//window.draw(bottomBorder.getShape());
-		//window.draw(  leftBorder.getShape());
-		//window.draw( rightBorder.getShape());
-		/*
-		
-		for(int i = 0; i < boxList.size(); i++)
-		{
-			window.draw(boxList[i].getShape());
-		}
-		
-		*/
-		
 
 		for (int i = 0; i < astList.size(); i++)
 		{
@@ -352,29 +322,29 @@ void update(Player player, vector<Asteroid> astList){
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
 	{
-		cout << "Key " << sf::Keyboard::Space << ": Space is Pressed." << endl
-			<< " Booster Launched! " << endl;
+		/*cout << "Key " << sf::Keyboard::Space << ": Space is Pressed." << endl
+			<< " Booster Launched! " << endl;*/
 		player.update(b2Vec2(0,-2));
 		//bodyPlayer->ApplyForce(b2Vec2(0, -2), bodyPlayer->GetWorldCenter(), true);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
 	{
-		cout << "Key " << sf::Keyboard::A << ": A is Pressed." << endl
-			<< " Going Left " << endl;
+		/*cout << "Key " << sf::Keyboard::A << ": A is Pressed." << endl
+			<< " Going Left " << endl;*/
 		player.update(b2Vec2(-1.5,0));
 		//bodyPlayer->ApplyForce(b2Vec2(-1.5, 0), bodyPlayer->GetWorldCenter(), true);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		cout << "Key " << sf::Keyboard::D << ": D is Pressed." << endl
-			<< " Going Right " << endl;
+		/*cout << "Key " << sf::Keyboard::D << ": D is Pressed." << endl
+			<< " Going Right " << endl;*/
 		player.update(b2Vec2(1.5,0));
 		//bodyPlayer->ApplyForce(b2Vec2(1.5, 0), bodyPlayer->GetWorldCenter(), true);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		cout << "Key " << sf::Keyboard::W << ": W is Pressed." << endl
-			<< " Speed Up " << endl;
+		/*cout << "Key " << sf::Keyboard::W << ": W is Pressed." << endl
+			<< " Speed Up " << endl;*/
 		for (int i = 0; i < astList.size(); i++) {
 			astList[i].moveForward();
 		}
@@ -383,8 +353,8 @@ void update(Player player, vector<Asteroid> astList){
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		cout << "Key " << sf::Keyboard::R << ": R is Pressed." << endl
-			<< " Reset Location " << endl;
+		/*cout << "Key " << sf::Keyboard::R << ": R is Pressed." << endl
+			<< " Reset Location " << endl;*/
 		//bodyDefPlayer.position = b2Vec2(
 		//	25 / PIXEL_PER_METER, 25 / PIXEL_PER_METER
 		//);

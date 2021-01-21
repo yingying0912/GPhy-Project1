@@ -27,7 +27,7 @@ using namespace std;
 static const float PIXEL_PER_METER = 32.0f;
 
 Player::Player(b2World& world, sf::Vector2f size, sf::Vector2f position,
-	float rotation)
+	float rotation, sf::Color color, int thickness, sf::Color outline, sf::Texture* texture)
 {
 	// Set Loc and Position
 	myPlayer = sf::RectangleShape(size);
@@ -37,9 +37,11 @@ Player::Player(b2World& world, sf::Vector2f size, sf::Vector2f position,
 	);
 	bodyDefPlayer.type = b2_dynamicBody;
 
-	myPlayer.setFillColor(sf::Color(255, 255, 255, 255));
-	myPlayer.setOutlineThickness(1);
-	myPlayer.setOutlineColor(sf::Color::Black);
+	myPlayer.setFillColor(color);
+	myPlayer.setOutlineThickness(thickness);
+	myPlayer.setOutlineColor(outline);
+
+	myPlayer.setTexture(texture);
 
 	bodyShapePlayer.SetAsBox((size.x / 2) / PIXEL_PER_METER, (size.y / 2) / PIXEL_PER_METER);
 

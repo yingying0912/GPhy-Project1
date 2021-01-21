@@ -20,7 +20,7 @@
 // Why? Refer to Computer Graphics
 static const float PIXEL_PER_METER = 32.0f;
 
-Asteroid::Asteroid(b2World& world, float radius, sf::Vector2f position)
+Asteroid::Asteroid(b2World& world, float radius, sf::Vector2f position, sf::Color color, int thickness, sf::Color outline, sf::Texture* texture)
 {
 	// Set Loc and Position
 	circle_ = sf::CircleShape(radius);
@@ -30,9 +30,11 @@ Asteroid::Asteroid(b2World& world, float radius, sf::Vector2f position)
 	);
 	bodyDef_.type = b2_dynamicBody;
 
-	circle_.setFillColor(sf::Color(255, 255, 255, 255));
-	circle_.setOutlineThickness(1);
-	circle_.setOutlineColor(sf::Color::Black);
+	circle_.setFillColor(color);
+	circle_.setOutlineThickness(thickness);
+	circle_.setOutlineColor(outline);
+
+	circle_.setTexture(texture);
 
 	bodyShape_.m_radius = radius / PIXEL_PER_METER;
 

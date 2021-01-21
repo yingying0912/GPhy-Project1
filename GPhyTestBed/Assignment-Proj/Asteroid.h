@@ -30,7 +30,7 @@ class Asteroid
 		b2FixtureDef bodyFixtureDef_;
 
 	public:
-		Asteroid(b2World& world, float radius, sf::Vector2f position);
+		Asteroid(b2World& world, float radius, sf::Vector2f position, sf::Color color, int thickness, sf::Color outline, sf::Texture* texture);
 
 		void setFillColor(sf::Color col);
 		void setOutlineThickness(float thickness);
