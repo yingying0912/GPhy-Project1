@@ -70,6 +70,9 @@ void Player::update(float windowX, float windowY)
 {
 	// Checking Breaking Wall
 	sf::Vector2f playerData = this->getShape().getPosition();
+	if (playerData.y < 0) {
+		bodyPlayer->ApplyForce(b2Vec2(0, 1), bodyPlayer->GetWorldCenter(), true);
+	}
 	if (playerData.y > windowY) {
 		bodyPlayer->ApplyForce(b2Vec2(0, -1), bodyPlayer->GetWorldCenter(), true);
 	}

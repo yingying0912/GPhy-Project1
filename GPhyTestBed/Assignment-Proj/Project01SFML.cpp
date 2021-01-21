@@ -71,6 +71,10 @@ int main()
 	float spawnTime = 1.0f, spawnrate = 1.f;
 	float currentTime = 0.0f;
 
+	const float baseScore = 10.f;
+	float timerScore = 0.f;
+	int scores = 0;
+
 	/*
 		Create Windows Application
 		-> Set Size Width, Height
@@ -129,11 +133,11 @@ int main()
 	H_Text.setPosition(3, -3);
 	H_Text.setFillColor(sf::Color::White);
 
-	sf::Text Asteroid_Text;
-	Asteroid_Text.setFont(font);
-	Asteroid_Text.setCharacterSize(16);
-	Asteroid_Text.setPosition(3, 24);
-	Asteroid_Text.setFillColor(sf::Color::White);
+	sf::Text Score_Text;
+	Score_Text.setFont(font);
+	Score_Text.setCharacterSize(16);
+	Score_Text.setPosition(3, 24);
+	Score_Text.setFillColor(sf::Color::White);
 
 	sf::Text Game_Over;
 	Game_Over.setFont(font);
@@ -195,7 +199,8 @@ int main()
 			if (spawnrate <= 3.f) {
 				spawnrate += 0.1f;
 			}
-			
+			timerScore += 0.1f;
+			scores = timerScore * baseScore * spawnrate;
 		}
 
 
@@ -225,7 +230,7 @@ int main()
 
 			for (int i = 0; i < astList.size(); i++) {
 				sf::Vector2f astData = astList[i].getShape().getPosition();
-				if (astData.y > windowSizeY) {
+				if (astData.y > windowSizeY+32) {
 					astList[i].getBody()->GetWorld()->DestroyBody(astList[i].getBody());
 					astList.erase(astList.begin() + i);
 				}
@@ -242,6 +247,7 @@ int main()
 			{
 				player.damaged();
 				player.reset(windowSizeX / 2, windowSizeY);
+				astList[collide].getBody()->GetWorld()->DestroyBody(astList[collide].getBody());
 				astList.erase(astList.begin() + collide);
 			}
 
@@ -265,20 +271,25 @@ int main()
 		ostringstream Heart;
 		Heart << player.getCurrentHealth();
 
-		ostringstream astListStream;
-		astListStream << astList.size();
+		ostringstream Current_Score;
+		Current_Score << scores;
 
 
 		H_Text.setString("Current Health: [" + Heart.str() + "]");
 		window.draw(H_Text);
 
-		Asteroid_Text.setString("Number of Asteroids: " + astListStream.str());
-		window.draw(Asteroid_Text);
+		Score_Text.setString("Score: " + Current_Score.str());
+		if (player.getCurrentHealth() >= 0) { window.draw(Score_Text); }
 
 		Game_Over.setString("GAME OVER");
 
 		if (player.getCurrentHealth() <= 0)
 		{
+			Score_Text.setCharacterSize(64);
+			Score_Text.setOrigin(144, 32);
+			Score_Text.setPosition(windowSizeX / 2, (windowSizeY / 2)+64);
+			window.draw(Score_Text);
+
 			window.draw(Game_Over);
 
 			currentTime = 0;
