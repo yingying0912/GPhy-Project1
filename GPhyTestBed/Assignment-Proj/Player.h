@@ -27,6 +27,8 @@ class Player{
 		b2BodyDef bodyDefPlayer;
 		b2PolygonShape bodyShapePlayer;
 		b2FixtureDef bodyFixtureDefPlayer;
+		int health;
+		int currentHealth;
 
 	public:
 		Player(b2World& world, sf::Vector2f size, sf::Vector2f position,
@@ -42,8 +44,10 @@ class Player{
 		void update();
 		void update(b2Vec2 force);
 
-		float getPositionX();
-		float getPositionY();
+		void damaged();
+		void reset(float x, float y);
+
+		int getCurrentHealth();
 
 		sf::Shape& getShape();
 };

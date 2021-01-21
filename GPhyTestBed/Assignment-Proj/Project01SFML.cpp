@@ -31,7 +31,8 @@
 using namespace std;
 
 void update(Player player, vector<Asteroid> astList);
-bool collision(Player player, vector<Asteroid> astList);
+int collision(Player player, vector<Asteroid> astList);
+void reset(Player player);
 
 sf::Font loadFont(const string& fontFilename = "resources/04b03.ttf")
 {
@@ -268,19 +269,13 @@ int main()
 				astList[i].update();
 			}
 
-			// Check Intersections!
-			for (int i = 0; i < astList.size(); i++) {
-				if (player.getShape().getGlobalBounds().intersects(astList[i].getShape().getGlobalBounds())) {
-					astList[i].setFillColor(sf::Color::White);
-				}
-				else {
-					astList[i].setFillColor(sf::Color(100, 100, 200));
-				}
-			}
-
-			/*if (collision){
+			int collide = collision(player, astList);
+			if (collide){
 				cout << "Collision occurred" << endl;
-			}*/
+				player.damaged();
+				player.reset(windowSizeX/2, windowSizeY);
+				astList.erase(astList.begin() + collide);
+			}
 
 			// timeElapsedSinceLastFrame can be higher than fixedTimeStep,
 			// so we deduct timeElapsedSinceLastFrame with fixedTimeStep
@@ -313,6 +308,11 @@ int main()
 
 
 		window.display();
+
+		if (player.getCurrentHealth() <= 0){
+			currentTime = 0;
+			timeElapsedSinceLastFrame = 0;
+		}
 	}
 
 	return 0;
@@ -362,10 +362,13 @@ void update(Player player, vector<Asteroid> astList){
 	}
 }
 
-bool collision(Player player, vector<Asteroid> astList){
-	//for (int i = 0; i < astList.size(); i++){
-		//if (player.getShape().intersects(astList[i].getShape()))
-			//return true;
-	//}
-	return false;
+int collision(Player player, vector<Asteroid> astList){
+	// Check Intersections!
+	for (int i = 0; i < astList.size(); i++) {
+		if (player.getShape().getGlobalBounds().intersects(astList[i].getShape().getGlobalBounds())) {
+			return i;
+			//astList[i].setFillColor(sf::Color::White);
+		}
+	}
+	return 0;
 }

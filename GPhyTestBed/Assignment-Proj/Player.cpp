@@ -53,6 +53,9 @@ Player::Player(b2World& world, sf::Vector2f size, sf::Vector2f position,
 	bodyPlayer->CreateFixture(&bodyFixtureDefPlayer);
 	
 	bodyPlayer->SetGravityScale(0);
+
+	health = 3;
+	currentHealth = health;
 }
 
 void Player::update()
@@ -129,10 +132,15 @@ sf::Shape& Player::getShape()
 	return myPlayer;
 }
 
-float Player::getPositionX(){
-	return bodyPlayer->GetPosition().x*PIXEL_PER_METER;
+void Player::damaged(){
+	currentHealth--;
 }
 
-float Player::getPositionY(){
-	return bodyPlayer->GetPosition().y*PIXEL_PER_METER;
+void Player::reset(float x, float y){
+	myPlayer.setPosition(x, y);
+	bodyPlayer->ApplyForce(b2Vec2(0,0), bodyPlayer->GetWorldCenter(), true);
+}
+
+int Player::getCurrentHealth(){
+	return currentHealth;
 }

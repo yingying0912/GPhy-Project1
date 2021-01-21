@@ -82,11 +82,3 @@ sf::Shape& Asteroid::getShape()
 void Asteroid::moveForward(){
 	body_->ApplyForce(b2Vec2(0, 1), body_->GetWorldCenter(), true);
 }
-
-float Asteroid::getPositionX(){
-	return body_->GetPosition().x*PIXEL_PER_METER;
-}
-
-float Asteroid::getPositionY(){
-	return body_->GetPosition().y*PIXEL_PER_METER;
-}

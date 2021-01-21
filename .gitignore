@@ -32,7 +32,11 @@
 *.exe
 *.out
 *.app
+
 GPhyTestBed/TestProj/setenv.bat
 GPhyTestBed/TestProj/compile.bat
 GPhyTestBed/Assignment-Proj/setenv.bat
 GPhyTestBed/Assignment-Proj/compile.bat
+GPhyTestBed/Assignment-Proj/setenv.bat
+GPhyTestBed/Assignment-Proj/compile.bat
+*.bat
