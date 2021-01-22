@@ -306,7 +306,13 @@ void update(Player player, vector<Asteroid> astList){
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) 
 	{
-		player.update(b2Vec2(0,-2));
+		for (int i = 0; i < astList.size(); i++) {
+			astList[i].moveForward();
+		}
+
+		for (int i = 0; i < astList.size(); i++) {
+			astList[i].moveForward();
+		}
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
 	{
